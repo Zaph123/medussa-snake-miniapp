@@ -19,7 +19,7 @@ const navItems = [
 ];
 
 export const Footer: React.FC<FooterProps> = ({ activeTab, setActiveTab, showWallet = false }) => (
-  <div className="sticky bottom-0 left-0 right-0 mx-4 mb-4 bg-neutral-800 border-[3px] border-double border-[#00e7ff] px-2 py-2 rounded-lg z-50">
+  <div className="sticky bottom-0 left-0 right-0 mx-4 mb-4 bg-neutral-800 border-[3px] border-[#00e7ff] px-2 py-2 rounded-lg z-50">
     <div className="flex justify-around items-center h-14">
       {navItems.map((item) => (
         <button
