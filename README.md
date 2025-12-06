@@ -79,3 +79,5 @@ However, this does not fully replicate the npx install flow and may not catch al
 
 If you update environment variable handling, remember to replicate any changes in the `dev`, `build`, and `deploy` scripts as needed. The `build` and `deploy` scripts may need further updates and are less critical for most development workflows.
 
+# medussa-snake-miniapp
+Medussa Miniapp is a neon-styled retro Snake game for the Farcaster ecosystem. It features smooth gameplay, responsive controls, and a glowing dark-mode UI built with Next.js and Tailwind. Fully integrated with the Neynar Miniapp SDK, it’s lightweight, fast, and easy to extend.
