@@ -26,7 +26,7 @@ export function ContextTab() {
     <div className="mx-6">
       <h2 className="text-lg font-semibold mb-2">Context</h2>
       <div className="p-4 bg-gray-800 rounded-lg">
-        <pre className="font-mono text-xs whitespace-pre-wrap break-words w-full">
+        <pre className="font-mono text-xs whitespace-pre-wrap wrap-break-word w-full">
           {JSON.stringify(context, null, 2)}
         </pre>
       </div>
