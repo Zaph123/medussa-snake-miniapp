@@ -104,11 +104,11 @@ export function SignIn() {
 
       {/* Session Information */}
       {authenticatedUser && (
-        <div className="my-2 p-2 text-xs overflow-x-scroll bg-gray-100 dark:bg-gray-900 rounded-lg font-mono">
-          <div className="font-semibold text-gray-500 dark:text-gray-300 mb-1">
+        <div className="my-2 p-2 text-xs overflow-x-scroll bg-gray-900 rounded-lg font-mono">
+          <div className="font-semibold text-gray-300 mb-1">
             Authenticated User
           </div>
-          <div className="whitespace-pre text-gray-700 dark:text-gray-200">
+          <div className="whitespace-pre text-gray-200">
             {JSON.stringify(authenticatedUser, null, 2)}
           </div>
         </div>
@@ -116,11 +116,11 @@ export function SignIn() {
 
       {/* Error Display */}
       {signInFailure && !authState.signingIn && (
-        <div className="my-2 p-2 text-xs overflow-x-scroll bg-gray-100 dark:bg-gray-900 rounded-lg font-mono">
-          <div className="font-semibold text-gray-500 dark:text-gray-300 mb-1">
+        <div className="my-2 p-2 text-xs overflow-x-scroll bg-gray-900 rounded-lg font-mono">
+          <div className="font-semibold text-gray-300 mb-1">
             Authentication Error
           </div>
-          <div className="whitespace-pre text-gray-700 dark:text-gray-200">
+          <div className="whitespace-pre text-gray-200">
             {signInFailure}
           </div>
         </div>

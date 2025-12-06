@@ -2,9 +2,9 @@
 
 import { useCallback, useState } from 'react';
 import { useMiniApp } from '@neynar/react';
-import { ShareButton } from '../Share';
-import { Button } from '../Button';
-import { SignIn } from '../wallet/SignIn';
+import {ShareButton} from '~/components/ui/Share'
+import { Button } from '~/components/ui/Button';
+import { SignIn } from '~/components/ui/wallet/SignIn';
 import { type Haptics } from '@farcaster/miniapp-sdk';
 import { APP_URL } from '~/lib/constants';
 
@@ -123,7 +123,7 @@ export function ActionsTab() {
 
   // --- Render ---
   return (
-    <div className="space-y-3 px-6 w-full max-w-md mx-auto">
+    <div className="space-y-3 px-6 w-full max-w-md mx-auto h-screen">
       {/* Share functionality */}
       <ShareButton
         buttonText="Share Mini App"
@@ -177,7 +177,7 @@ export function ActionsTab() {
 
       {/* Haptic feedback controls */}
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="block text-sm font-medium text-gray-300">
           Haptic Intensity
         </label>
         <select
@@ -187,7 +187,7 @@ export function ActionsTab() {
               e.target.value as Haptics.ImpactOccurredType
             )
           }
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value={'light'}>Light</option>
           <option value={'medium'}>Medium</option>

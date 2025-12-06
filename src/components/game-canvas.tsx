@@ -115,15 +115,9 @@ export default function GameCanvas() {
     const h = canvas.height;
     const { gridW, gridH } = gridRef.current;
 
-    // clear canvas
-    ctx.clearRect(0, 0, w, h);
-    // console.log(w, h)
-    //     // background gradient
-    //     const g = ctx.createLinearGradient(0, 0, 0, 20);
-    //     g.addColorStop(0, "#051014");
-    //     g.addColorStop(1, "#00110f");
-    //     ctx.fillStyle = g;
-    //     ctx.fillRect(0, 0, w, h);
+    // clear canvas and fill background
+    ctx.fillStyle = "#051014";
+    ctx.fillRect(0, 0, w, h);
 
     // grid lines
     ctx.strokeStyle = "#0f2b25";           // Set the color of the grid lines to a dark teal shade.
@@ -146,17 +140,15 @@ export default function GameCanvas() {
     // }
 
     // draw food
-    if (food) drawCell(ctx, food.x, food.y, "#ff8c00", 2);
+    if (food) drawCell(ctx, food.x, food.y, "#ff8c00", 2); // neon orange with glow
 
     // draw snake
     snake.forEach((s, i) => {
-      const headColor =
-        skin === "nokia" ? "#94f9ff" : skin === "neon" ? "#00ffcc" : "#ffd166";
-      const bodyColor =
-        skin === "nokia" ? "#7ef87e" : skin === "neon" ? "#00e7ff" : "#f6d365";
+      const headColor = "#00e7ff"; // neon cyan
+      const bodyColor = "#7ef87e"; // neon green
       drawCell(ctx, s.x, s.y, i === 0 ? headColor : bodyColor, i === 0 ? 1 : 0);
     });
-  }, [snake, food, skin]);
+  }, [snake, food]);
 
   function drawCell(
     ctx: CanvasRenderingContext2D,
@@ -183,20 +175,20 @@ export default function GameCanvas() {
   return (
     <div className="flex flex-col items-center gap-3 p-3">
       {/* Scoreboard */}
-      <div className="flex items-center justify-between w-full max-w-md mb-2">
-        <div className="text-sm">
+      <div className="flex items-center justify-between w-full max-w-md mb-2 float">
+        <h3 className="text-sm text-[#00e7ff]">
           Score: <span className="score-display">{score}</span>
-        </div>
-        <div className="text-sm">
+        </h3>
+        <h3 className="text-sm text-[#00e7ff]">
           Best: <span className="score-display">{best ?? "-"}</span>
-        </div>
+        </h3>
       </div>
 
       {/* Responsive canvas */}
       <div className="w-full max-w-md aspect-square">
         <canvas
           ref={canvasRef}
-          className="w-full h-full rounded-lg border border-zinc-700"
+          className="w-full h-full"
         />
       </div>
 
@@ -205,15 +197,14 @@ export default function GameCanvas() {
         {/* Top Actions: Play / Resume / Pause */}
         <div className="flex gap-4 w-full justify-center">
           {!running && !gameOver && status === "idle" && (
-            <Button className="" onClick={startGame}>
+            <Button className="play-btn pulse-glow" onClick={startGame}>
               <Play size={20} />
               <span className="">Start</span>
             </Button>
           )}
           {gameOver && (
             <Button
-              className=""
-              variant="destructive"
+              className="play-btn pulse-glow"
               onClick={() => {
                 startGame();
                 resetGame(gridRef.current.gridW, gridRef.current.gridH);
@@ -224,13 +215,13 @@ export default function GameCanvas() {
             </Button>
           )}
           {running && (
-            <Button className="" onClick={togglePause}>
+            <Button className="pause-btn pulse-glow" onClick={togglePause}>
               <Pause size={20} />
               <span className="">Pause</span>
             </Button>
           )}
           {!running && !gameOver && status !== "idle" && (
-            <Button className="" onClick={togglePause}>
+            <Button className="play-btn pulse-glow" onClick={togglePause}>
               <Play size={20} />
               <span className="">Resume</span>
             </Button>
@@ -241,7 +232,7 @@ export default function GameCanvas() {
         <GamePad updateDirection={setDirection} />
         {/* Share Notification */}
         {showShare && (
-          <div className="mt-3 text-sm text-emerald-400">
+          <div className="mt-3 text-sm text-[#7ef87e]">
             Copied share link to clipboard
           </div>
         )}
@@ -256,39 +247,39 @@ const GamePad = ({
   updateDirection: (direction: Point, key: Dir) => void;
 }) => {
   return (
-    <div className="flex flex-col items-center gap-3 select-none">
+    <div className="dpad flex flex-col items-center gap-3 select-none">
       {/* Up */}
-      <Button
+      <button
         onClick={() => updateDirection({ x: 0, y: -1 }, "U")}
-        className="size-10 rounded-full bg-zinc-900 shadow-md shadow-black/30 hover:shadow-lg hover:scale-105 active:scale-95 transition-transform duration-150 flex items-center justify-center text-cyan-400"
+        className="flex items-center justify-center"
       >
         <ArrowUp size={22} />
-      </Button>
+      </button>
 
       {/* Left & Right */}
       <div className="flex gap-6 mt-1">
-        <Button
+        <button
           onClick={() => updateDirection({ x: -1, y: 0 }, "L")}
-          className="size-10 rounded-full bg-zinc-900 shadow-md shadow-black/30 hover:shadow-lg hover:scale-105 active:scale-95 transition-transform duration-150 flex items-center justify-center text-cyan-400"
+          className="flex items-center justify-center"
         >
           <ArrowLeft size={22} />
-        </Button>
+        </button>
         <div className="size-10" /> {/* Placeholder */}
-        <Button
+        <button
           onClick={() => updateDirection({ x: 1, y: 0 }, "R")}
-          className="size-10 rounded-full bg-zinc-900 shadow-md shadow-black/30 hover:shadow-lg hover:scale-105 active:scale-95 transition-transform duration-150 flex items-center justify-center text-cyan-400"
+          className="flex items-center justify-center"
         >
           <ArrowRight size={22} />
-        </Button>
+        </button>
       </div>
 
       {/* Down */}
-      <Button
+      <button
         onClick={() => updateDirection({ x: 0, y: 1 }, "D")}
-        className="size-10 rounded-full bg-zinc-900 shadow-md shadow-black/30 hover:shadow-lg hover:scale-105 active:scale-95 transition-transform duration-150 flex items-center justify-center text-cyan-400 mt-1"
+        className="flex items-center justify-center mt-1"
       >
         <ArrowDown size={22} />
-      </Button>
+      </button>
     </div>
   );
 };

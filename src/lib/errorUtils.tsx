@@ -36,7 +36,7 @@ export function renderError(error: unknown): ReactElement | null {
 
     if (isUserRejection) {
       return (
-        <div className="mt-2 p-2 text-xs bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <div className="mt-2 p-2 text-xs bg-gray-800 rounded-lg">
           <div className="font-semibold text-red-500 mb-1">User Rejection</div>
           <div>Transaction was rejected by user.</div>
         </div>
@@ -58,7 +58,7 @@ export function renderError(error: unknown): ReactElement | null {
   }
 
   return (
-    <div className="mt-2 p-2 text-xs overflow-x-scroll bg-gray-100 dark:bg-gray-800 rounded-lg font-mono">
+    <div className="mt-2 p-2 text-xs overflow-x-scroll bg-gray-800 rounded-lg font-mono">
       <div className="font-semibold text-red-500 mb-1">Error</div>
       <div className="whitespace-pre-wrap break-words">{errorMessage}</div>
     </div>

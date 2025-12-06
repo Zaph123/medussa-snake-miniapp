@@ -4,14 +4,14 @@ import { useCallback, useMemo, useState, useEffect } from "react";
 import { useAccount, useSendTransaction, useSignTypedData, useWaitForTransactionReceipt, useDisconnect, useConnect, useSwitchChain, useChainId, type Connector } from "wagmi";
 import { useWallet as useSolanaWallet } from '@solana/wallet-adapter-react';
 import { base, degen, mainnet, optimism, unichain } from "wagmi/chains";
-import { Button } from "../Button";
-import { truncateAddress } from "../../../lib/truncateAddress";
-import { renderError } from "../../../lib/errorUtils";
-import { SignEvmMessage } from "../wallet/SignEvmMessage";
-import { SendEth } from "../wallet/SendEth";
-import { SignSolanaMessage } from "../wallet/SignSolanaMessage";
-import { SendSolana } from "../wallet/SendSolana";
-import { USE_WALLET, APP_NAME } from "../../../lib/constants";
+import { Button } from "~/components/ui/Button";
+import { truncateAddress } from "~/lib/truncateAddress";
+import { renderError } from "~/lib/errorUtils";
+import { SignEvmMessage } from "~/components/ui//wallet/SignEvmMessage";
+import { SendEth } from "~/components/ui//wallet/SendEth";
+import { SignSolanaMessage } from "~/components/ui//wallet/SignSolanaMessage";
+import { SendSolana } from "~/components/ui//wallet/SendSolana";
+import { USE_WALLET, APP_NAME } from "~/lib/constants";
 import { useMiniApp } from "@neynar/react";
 
 /**
@@ -276,7 +276,7 @@ export function WalletTab() {
 
   // --- Render ---
   return (
-    <div className="space-y-3 px-6 w-full max-w-md mx-auto">
+    <div className="space-y-3 px-6 w-full max-w-md mx-auto h-screen">
       {/* Wallet Information Display */}
       <WalletStatus address={address} chainId={chainId} />
 
