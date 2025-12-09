@@ -16,8 +16,6 @@ import GameCanvas from "~/components/game-canvas";
  */
 export function HomeTab() {
   return (
-    <div className="flex items-center justify-center px-3">
       <GameCanvas />
-    </div>
   );
 } 

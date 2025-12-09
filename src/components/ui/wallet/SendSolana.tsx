@@ -8,6 +8,18 @@ import { truncateAddress } from "../../../lib/truncateAddress";
 import { renderError } from "../../../lib/errorUtils";
 
 /**
+ * Props for the SendSolana component
+ */
+export interface SendSolanaProps {
+  /** Recipient Solana wallet address (base58 string) */
+  recipient: string;
+  /** Amount to send in SOL (will be converted to lamports) */
+  amount: number;
+  /** Optional button text override */
+  buttonText?: string;
+}
+
+/**
  * SendSolana component handles sending SOL transactions on Solana.
  * 
  * This component provides a simple interface for users to send SOL transactions
@@ -15,21 +27,20 @@ import { renderError } from "../../../lib/errorUtils";
  * and error handling.
  * 
  * Features:
- * - SOL transaction sending
+ * - SOL transaction sending with dynamic recipient and amount
  * - Transaction status tracking
  * - Error handling and display
  * - Loading state management
  * 
- * Note: This component is a placeholder implementation. In a real application,
- * you would integrate with a Solana wallet adapter and transaction library
- * like @solana/web3.js to handle actual transactions.
- * 
  * @example
  * ```tsx
- * <SendSolana />
+ * <SendSolana 
+ *   recipient="Ao3gLNZAsbrmnusWVqQCPMrcqNi6jdYgu8T6NCoXXQu1" 
+ *   amount={0.1} 
+ * />
  * ```
  */
-export function SendSolana() {
+export function SendSolana({ recipient, amount, buttonText = "Send Transaction (sol)" }: SendSolanaProps) {
   const [solanaTransactionState, setSolanaTransactionState] = useState<
     | { status: 'none' }
     | { status: 'pending' }
@@ -40,9 +51,12 @@ export function SendSolana() {
   const { connection: solanaConnection } = useSolanaConnection();
   const { sendTransaction, publicKey } = useSolanaWallet();
 
-  // This should be replaced but including it from the original demo
-  // https://github.com/farcasterxyz/frames-v2-demo/blob/main/src/components/Demo.tsx#L718
-  const ashoatsPhantomSolanaWallet = 'Ao3gLNZAsbrmnusWVqQCPMrcqNi6jdYgu8T6NCoXXQu1';
+  /**
+   * Converts SOL amount to lamports (1 SOL = 1,000,000,000 lamports)
+   */
+  const solToLamports = (sol: number): bigint => {
+    return BigInt(Math.floor(sol * 1_000_000_000));
+  };
 
   /**
    * Handles sending the Solana transaction
@@ -54,19 +68,34 @@ export function SendSolana() {
         throw new Error('no Solana publicKey');
       }
 
+      if (!recipient) {
+        throw new Error('recipient address is required');
+      }
+
+      if (amount <= 0) {
+        throw new Error('amount must be greater than 0');
+      }
+
+      // Validate recipient address
+      try {
+        new PublicKey(recipient);
+      } catch {
+        throw new Error('invalid recipient address');
+      }
+
       const { blockhash } = await solanaConnection.getLatestBlockhash();
       if (!blockhash) {
         throw new Error('failed to fetch latest Solana blockhash');
       }
 
       const fromPubkeyStr = publicKey.toBase58();
-      const toPubkeyStr = ashoatsPhantomSolanaWallet;
+      const lamports = solToLamports(amount);
       const transaction = new Transaction();
       transaction.add(
         SystemProgram.transfer({
           fromPubkey: new PublicKey(fromPubkeyStr),
-          toPubkey: new PublicKey(toPubkeyStr),
-          lamports: 0n,
+          toPubkey: new PublicKey(recipient),
+          lamports: lamports,
         }),
       );
       transaction.recentBlockhash = blockhash;
@@ -88,7 +117,7 @@ export function SendSolana() {
         setSolanaTransactionState({ status: 'none' });
       }
     }
-  }, [sendTransaction, publicKey, solanaConnection]);
+  }, [sendTransaction, publicKey, solanaConnection, recipient, amount]);
 
   return (
     <>
@@ -98,7 +127,7 @@ export function SendSolana() {
         isLoading={solanaTransactionState.status === 'pending'}
         className="mb-4"
       >
-        Send Transaction (sol)
+        {buttonText}
       </Button>
       {solanaTransactionState.status === 'error' && renderError(solanaTransactionState.error)}
       {solanaTransactionState.status === 'success' && (

@@ -120,8 +120,8 @@ export default function GameCanvas() {
     ctx.fillRect(0, 0, w, h);
 
     // grid lines
-    ctx.strokeStyle = "#0f2b25";           // Set the color of the grid lines to a dark teal shade.
-    ctx.lineWidth = 1;                     // Set the thickness of the grid lines to 1 pixel.
+    ctx.strokeStyle = "#0f2b25"; // Set the color of the grid lines to a dark teal shade.
+    ctx.lineWidth = 1; // Set the thickness of the grid lines to 1 pixel.
 
     // // Draw vertical grid lines
     // for (let x = 0; x <= gridW; x++) {     // Loop from 0 to the number of grid columns (inclusive).
@@ -173,7 +173,7 @@ export default function GameCanvas() {
   }
 
   return (
-    <div className="flex flex-col items-center gap-3 p-3">
+    <div className="flex flex-col items-center gap-5 p-5 w-full">
       {/* Scoreboard */}
       <div className="flex items-center justify-between w-full max-w-md mb-2 float">
         <h3 className="text-sm text-[#00e7ff]">
@@ -183,59 +183,57 @@ export default function GameCanvas() {
           Best: <span className="score-display">{best ?? "-"}</span>
         </h3>
       </div>
-
-      {/* Responsive canvas */}
-      <div className="w-full max-w-md aspect-square">
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full"
-        />
-      </div>
-
-      {/* Controls Container */}
-      <div className="flex flex-col mt-4 items-center gap-6 w-full max-w-md mx-auto">
-        {/* Top Actions: Play / Resume / Pause */}
-        <div className="flex gap-4 w-full justify-center">
-          {!running && !gameOver && status === "idle" && (
-            <Button className="play-btn pulse-glow" onClick={startGame}>
-              <Play size={20} />
-              <span className="">Start</span>
-            </Button>
-          )}
-          {gameOver && (
-            <Button
-              className="play-btn pulse-glow"
-              onClick={() => {
-                startGame();
-                resetGame(gridRef.current.gridW, gridRef.current.gridH);
-              }}
-            >
-              <RefreshCcw size={20} />
-              <span className="">Play Again</span>
-            </Button>
-          )}
-          {running && (
-            <Button className="pause-btn pulse-glow" onClick={togglePause}>
-              <Pause size={20} />
-              <span className="">Pause</span>
-            </Button>
-          )}
-          {!running && !gameOver && status !== "idle" && (
-            <Button className="play-btn pulse-glow" onClick={togglePause}>
-              <Play size={20} />
-              <span className="">Resume</span>
-            </Button>
-          )}
+      <div className="flex md:flex-row flex-col items-center justify-center max-w-3xl w-full gap-20">
+        {/* Responsive canvas */}
+        <div className="w-full max-w-md aspect-square">
+          <canvas ref={canvasRef} className="w-full h-full" />
         </div>
 
-        {/* Modern Mobile D-Pad */}
-        <GamePad updateDirection={setDirection} />
-        {/* Share Notification */}
-        {showShare && (
-          <div className="mt-3 text-sm text-[#7ef87e]">
-            Copied share link to clipboard
+        {/* Controls Container */}
+        <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
+          {/* Top Actions: Play / Resume / Pause */}
+          <div className="flex gap-4 w-full justify-center">
+            {!running && !gameOver && status === "idle" && (
+              <Button className="play-btn pulse-glow" onClick={startGame}>
+                <Play size={20} />
+                <span className="">Start</span>
+              </Button>
+            )}
+            {gameOver && (
+              <Button
+                className="play-btn pulse-glow"
+                onClick={() => {
+                  startGame();
+                  resetGame(gridRef.current.gridW, gridRef.current.gridH);
+                }}
+              >
+                <RefreshCcw size={20} />
+                <span className="">Play Again</span>
+              </Button>
+            )}
+            {running && (
+              <Button className="pause-btn pulse-glow" onClick={togglePause}>
+                <Pause size={20} />
+                <span className="">Pause</span>
+              </Button>
+            )}
+            {!running && !gameOver && status !== "idle" && (
+              <Button className="play-btn pulse-glow" onClick={togglePause}>
+                <Play size={20} />
+                <span className="">Resume</span>
+              </Button>
+            )}
           </div>
-        )}
+
+          {/* Modern Mobile D-Pad */}
+          <GamePad updateDirection={setDirection} />
+          {/* Share Notification */}
+          {showShare && (
+            <div className="mt-3 text-sm text-[#7ef87e]">
+              Copied share link to clipboard
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

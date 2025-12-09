@@ -103,12 +103,12 @@ export default function App(
       {/* <Header neynarUser={neynarUser} /> */}
 
       {/* Main content and footer should be centered */}
-      <div className="container py-2 min-h-screen">
+      <div className="container py-2">
         {/* Main title */}
-        <h1 className="text-2xl font-bold text-center mb-4 text-[#00e7ff] glow-text float">
+        {/* <h1 className="text-2xl font-bold text-center mb-4 text-[#00e7ff] glow-text float">
           {title}
-        </h1>
-        <div className="flex flex-col h-screen">
+        </h1> */}
+        <div className="flex flex-col min-h-screen justify-center items-center">
           {/* Tab content rendering */}
           {currentTab === Tab.Home && <HomeTab />}
           {currentTab === Tab.Actions && <ActionsTab />}
@@ -116,11 +116,11 @@ export default function App(
           {currentTab === Tab.Wallet && <WalletTab />}
         </div>
         {/* Footer with navigation */}
-        <Footer
+        {/* <Footer
           activeTab={currentTab as Tab}
           setActiveTab={setActiveTab}
           showWallet={USE_WALLET}
-        />
+        /> */}
       </div>
     </div>
   );

@@ -19,13 +19,13 @@ const navItems = [
 ];
 
 export const Footer: React.FC<FooterProps> = ({ activeTab, setActiveTab, showWallet = false }) => (
-  <div className="sticky bottom-0 left-0 right-0 mx-4 mb-4 bg-neutral-800 border-[3px] border-[#00e7ff] px-2 py-2 rounded-lg z-50">
+  <div className="sticky bottom-0 left-0 right-0 mx-4 mb-4 bg-neutral-800 px-2 py-2 rounded-lg z-50">
     <div className="flex justify-around items-center h-14">
       {navItems.map((item) => (
         <button
           key={item.label}
           onClick={() => setActiveTab(item.label.toLowerCase() as Tab)}
-          className={`flex flex-col items-center justify-center w-full h-full ${
+          className={`flex flex-col items-center justify-center w-full h-full cursor-pointer ${
             activeTab === item.label.toLowerCase() ? 'text-neon-cyan' : 'text-gray-400'
           }`}
         >
