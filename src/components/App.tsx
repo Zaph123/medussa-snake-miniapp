@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import { useMiniApp } from "@neynar/react";
 import { Header } from "~/components/ui/Header";
 import { Footer } from "~/components/ui/Footer";
-import { HomeTab, ActionsTab, ContextTab, WalletTab } from "~/components/tabs";
 import { USE_WALLET } from "~/lib/constants";
 import { useNeynarUser } from "../hooks/useNeynarUser";
+import SplashScreen from "./SplashScreen";
 
 // --- Types ---
 export enum Tab {
@@ -46,16 +46,14 @@ export interface AppProps {
  * - Loading states for async operations
  *
  * @param props - Component props
- * @param props.title - Optional title for the mini app (defaults to "Neynar Starter Kit")
+ * @param props.title - Optional title for the mini app (defaults to "Medussa")
  *
  * @example
  * ```tsx
  * <App title="My Mini App" />
  * ```
  */
-export default function App(
-  { title }: AppProps = { title: "Neynar Starter Kit" }
-) {
+export default function App({ title }: AppProps = { title: "Medussa" }) {
   // --- Hooks ---
   const { isSDKLoaded, context, setInitialTab, setActiveTab, currentTab } =
     useMiniApp();
@@ -83,7 +81,7 @@ export default function App(
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
           <div className="spinner h-8 w-8 mx-auto mb-4"></div>
-          <p className="text-[#00e7ff]">Loading SDK...</p>
+          <p className="text-[#00e7ff]">Loading Medussa</p>
         </div>
       </div>
     );
@@ -108,13 +106,16 @@ export default function App(
         {/* <h1 className="text-2xl font-bold text-center mb-4 text-[#00e7ff] glow-text float">
           {title}
         </h1> */}
-        <div className="flex flex-col min-h-screen justify-center items-center">
-          {/* Tab content rendering */}
+
+        <SplashScreen onContinue={() => {}} />
+
+        {/* Tab content rendering */}
+        {/* <div className="flex flex-col min-h-screen justify-center items-center">
           {currentTab === Tab.Home && <HomeTab />}
           {currentTab === Tab.Actions && <ActionsTab />}
           {currentTab === Tab.Context && <ContextTab />}
           {currentTab === Tab.Wallet && <WalletTab />}
-        </div>
+        </div> */}
         {/* Footer with navigation */}
         {/* <Footer
           activeTab={currentTab as Tab}

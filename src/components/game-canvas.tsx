@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dir, Point, useGame } from "~/stores/gameStore";
 import { Button } from "./ui/Button";
 import {
@@ -12,12 +12,14 @@ import {
   RefreshCcw,
   Pause,
 } from "lucide-react";
+import VirtualJoystick from "./VirtualJoystick";
 
 const CELL = 10;
 
 export default function GameCanvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const lastTickTsRef = useRef<number>(0);
+  const [controlMode, setControlMode] = useState<"dpad" | "joystick">("dpad");
 
   const {
     snake,
@@ -79,6 +81,18 @@ export default function GameCanvas() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [running, startGame, setDirection, togglePause]);
+
+  // control mode persistence
+  useEffect(() => {
+    const stored = localStorage.getItem("controlMode");
+    if (stored === "dpad" || stored === "joystick") {
+      setControlMode(stored);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("controlMode", controlMode);
+  }, [controlMode]);
 
   // game loop
   useEffect(() => {
@@ -175,24 +189,54 @@ export default function GameCanvas() {
   return (
     <div className="flex flex-col items-center gap-5 p-5 w-full">
       {/* Scoreboard */}
-      <div className="flex items-center justify-between w-full max-w-md mb-2 float">
+      <div className="flex items-center justify-between w-full max-w-md mb-2 float hud-bar">
         <h3 className="text-sm text-[#00e7ff]">
-          Score: <span className="score-display">{score}</span>
+          <span className="hud-label">Score</span>:{" "}
+          <span className="score-display">{score}</span>
         </h3>
         <h3 className="text-sm text-[#00e7ff]">
-          Best: <span className="score-display">{best ?? "-"}</span>
+          <span className="hud-label">Best</span>:{" "}
+          <span className="score-display">{best ?? "-"}</span>
         </h3>
       </div>
-      <div className="flex md:flex-row flex-col items-center justify-center max-w-3xl w-full gap-20">
+          {/* Control Mode Toggle */}
+          <div className="w-full flex flex-col gap-2 max-w-xl">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-[#7ef87e]">Control Mode</span>
+              <div className="flex gap-2">
+                <button
+                  className={`px-3 py-1 rounded-md text-sm border ${
+                    controlMode === "dpad"
+                      ? "border-[#00e7ff] text-[#00e7ff] bg-white/5"
+                      : "border-transparent text-gray-300 bg-white/0"
+                  }`}
+                  onClick={() => setControlMode("dpad")}
+                >
+                  D-Pad
+                </button>
+                <button
+                  className={`px-3 py-1 rounded-md text-sm border ${
+                    controlMode === "joystick"
+                      ? "border-[#00e7ff] text-[#00e7ff] bg-white/5"
+                      : "border-transparent text-gray-300 bg-white/0"
+                  }`}
+                  onClick={() => setControlMode("joystick")}
+                >
+                  Joystick
+                </button>
+              </div>
+            </div>
+          </div>
+      <div className="flex md:flex-row flex-col items-center justify-center max-w-3xl w-full md:gap-20 gap-5">
         {/* Responsive canvas */}
-        <div className="w-full max-w-md aspect-square">
+        <div className="w-full max-w-md aspect-square game-shell">
           <canvas ref={canvasRef} className="w-full h-full" />
         </div>
 
         {/* Controls Container */}
-        <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
+        <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto control-surface">
           {/* Top Actions: Play / Resume / Pause */}
-          <div className="flex gap-4 w-full justify-center">
+          {/* <div className="flex gap-4 w-full justify-center">
             {!running && !gameOver && status === "idle" && (
               <Button className="play-btn pulse-glow" onClick={startGame}>
                 <Play size={20} />
@@ -223,10 +267,15 @@ export default function GameCanvas() {
                 <span className="">Resume</span>
               </Button>
             )}
-          </div>
+          </div> */}
+
 
           {/* Modern Mobile D-Pad */}
-          <GamePad updateDirection={setDirection} />
+          {controlMode === "dpad" ? (
+            <GamePad updateDirection={setDirection} />
+          ) : (
+            <VirtualJoystick updateDirection={setDirection} />
+          )}
           {/* Share Notification */}
           {showShare && (
             <div className="mt-3 text-sm text-[#7ef87e]">
